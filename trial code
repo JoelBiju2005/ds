@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct coach {
+    char code[10];
+    int seats;
+    struct coach* next;
+    struct coach* prev;
+} COACH;
+
+// Create coach node
+COACH* createCoach(char* code, int seats) {
+    COACH* newNode = (COACH*)malloc(sizeof(COACH));
+    strcpy(newNode->code, code);
+    newNode->seats = seats;
+    newNode->next = newNode->prev = NULL;
+    return newNode;
+}
+
+// Insert coach at end
+COACH* insertEnd(COACH* head, char* code, int seats) {
+    COACH* newNode = createCoach(code, seats);
+    if (head == NULL)
+        return newNode;
+    COACH* temp = head;
+    while (temp->next != NULL)
+        temp = temp->next;
+    temp->next = newNode;
+    newNode->prev = temp;
+    return head;
+}
+
+// Navigate next and previous coaches
+void navigate(COACH* head) {
+    COACH* temp = head;
+    printf("Forward:\n");
+    while (temp != NULL) {
+        printf("Coach: %s, Seats: %d\n", temp->code, temp->seats);
+        if (temp->next == NULL) break;
+        temp = temp->next;
+    }
+
+    printf("Backward:\n");
+    while (temp != NULL) {
+        printf("Coach: %s, Seats: %d\n", temp->code, temp->seats);
+        temp = temp->prev;
+    }
+}
+
+int main() {
+    COACH* head = NULL;
+    head = insertEnd(head, "S1", 72);
+    head = insertEnd(head, "S2", 72);
+    head = insertEnd(head, "A1", 56);
+    navigate(head);
+    return 0;
+}
